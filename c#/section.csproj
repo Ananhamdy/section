@@ -1,0 +1,7 @@
+<Project Sdk ="Microsoft.Net.Sdk">
+<ProjectJgroup>
+<Targetframework>net6.0</Targetframework>
+<OutputType>Exe</OutputType>
+<LangVersion>latest</LangVersion>
+</ProjectJgroup>
+</Project>
