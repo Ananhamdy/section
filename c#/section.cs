@@ -140,7 +140,7 @@ public class Staff : Person {
     throw new Exception("invalid salary");
     }
     var between=(2022-Age);
-    if (berween<=21){
+    if (between<=21){
         throw new Exception("invalid joinyear");
     }
         Salary=salary;
