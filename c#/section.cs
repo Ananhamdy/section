@@ -1,15 +1,53 @@
 using System;
 namespace Examples;
 public  class Person{
-    public String Name;
-    public int Age;
+    private String _name;
+    public string Name{
+        get{return _name;}
+        
+        set {
+            if(value==null || value=="" || value.Length>=32){
+          throw new Exception ("invalid name");
+             } 
+        _name=value;
+
+        }
+    }
+    private int _age;
+    public int Age{
+        get {return _age;}
+        set{
+      if(value<=0 ||value>128){
+     throw new Exception ("invalid age");
+
+       }  
+            _age=value;
+        }
+    }
 public Person(){}
    public Person (String name,int age){
+    if(name==null || name=="" || name.Length>=32){
+    throw new NullReferenceException ("invalid name");
+    }
+    var i=3/age;
+
+    if(age<=0 ||age>128){
+    throw new Exception ("invalid age");
+
+    }  
+    
     Name=name;
-    Age=age;
+    _age=age;
    }
+public string getName() => _name;
+public int getAge()=> _age;
+
+public void setName(String name){
+_name=name;
+}
+
    public virtual void print (){
-    Console.WriteLine($"my name is {Name} , my age is {Age}");
+    Console.WriteLine($"my name is {Name} , my age is {_age}");
    }
 
    
@@ -17,15 +55,38 @@ public Person(){}
 public class Student : Person {
     public String Name;
     public int Age;
-   public int Year;
-   public float Gpa;
+    private int _year;
+   public int Year{
+    get{
+        return _year; 
+        }
+        set{
+            _year=value;
+        }
+   }
+   private float _gpa;
+     public float Gpa{
+        get{
+            return _gpa;
+        }
+        set{
+            _gpa=value;
+        }
+     }
+   
  public Student(String name,int age,int year,float gpa):base(name,age)
  {
+    if(year< 1 || year>5 ){
+    throw new Exception("invalid year");
+    }
+    if (gpa<0 || gpa >4){
+        throw new Exception("invalid gpa");
+    }
     Year=year;
     Gpa=gpa;
  }
  public override void print(){
-    Console.WriteLine($"My name is {Name},My age is {Age} ,and my gpa {Gpa}");
+    Console.WriteLine($"My name is {Name},My age is {getAge()} ,and my gpa {Gpa}");
  }
 }
 public class Database{
@@ -42,22 +103,51 @@ public class Database{
         People[_currentindex++]=staff;
     }
     public void printall(){
-        for(var i=0;i<_currentindex;i++){
-            People[i].print();
+        foreach(var item in People){
+            item?.print();
         }
+        
     }
 }
 
 public class Staff : Person {
-    public double Salary;
-    public int JoinYear;
+    private double _salary;
+    public double Salary{
+        get{
+            return _salary;
+        }
+        set{
+           if(value<0|| value>120000 ){
+          throw new Exception("invalid salary"); 
+        }
+          _salary=value;
+
+       }
+    }
+    private int _joinyear;
+    public int JoinYear{
+          get{
+            return _joinyear;
+        }
+        set{
+    
+          _joinyear=value;
+
+       } 
+    }
     public Staff(String name,int age,double salary,int joinyear):base(name,age){
+            if(salary<0|| salary>120000 ){
+    throw new Exception("invalid salary");
+    }
+    if (joinyear<21){
+        throw new Exception("invalid joinyear");
+    }
         Salary=salary;
         JoinYear=joinyear;
     }
     public override void print()
     {
-     Console.WriteLine($"My name is {Name},My age is {Age} ,and my salary {Salary}");
+     Console.WriteLine($"My name is {Name},My age is {getAge()} ,and my salary {Salary}");
 
     }
 }
@@ -77,10 +167,13 @@ public class Program{
               var year=Convert.ToInt32(Console.ReadLine());
              Console.Write("gpa :");
              var gpa=Convert.ToSingle(Console.ReadLine());
-
-        var student=new Student(name,age,year,gpa);
-
-        database.Addstudent(student);
+             try{
+           var student=new Student(name,age,year,gpa);
+            database.Addstudent(student);
+             }
+             catch(Exception e){
+              Console.WriteLine(e.Message);
+             }
                 break;
                 case 2:
          Console.Write("name :");
@@ -91,18 +184,28 @@ public class Program{
         var salary=Convert.ToInt32(Console.ReadLine());
         Console.Write("year :");
         var joinyear=Convert.ToInt32(Console.ReadLine());
-
+        try{
         var staff=new Staff(name1,age1,salary,joinyear);
+          database.Addstaff(staff);
+        }
+        catch(Exception e){
+             Console.WriteLine(e.Message);
 
-        database.Addstaff(staff);
+        }
                 break;
                 case 3:
                  Console.Write("name :");
         var name2=Console.ReadLine();
         Console.Write("age :");
         var age2=Convert.ToInt32(Console.ReadLine());
-         var person=new Person(name2,age2);
+        try{
+        var person=new Person(name2,age2);
          database.Addperson(person);
+        person.Name=null;
+        }catch(Exception e){
+            Console.WriteLine(e.Message);
+        }
+         
                 break;
                 case 4:
                database.printall();
@@ -111,7 +214,7 @@ public class Program{
                 return;
             }
         }
-
+        
     }
 
 }
