@@ -1,5 +1,5 @@
 using System;
-namespace Examples;
+namespace Task;
 public  class Person{
     private String _name;
     public string Name{
@@ -37,7 +37,7 @@ public Person(){}
     }  
     
     Name=name;
-    _age=age;
+    Age=age;
    }
 public string getName() => _name;
 public int getAge()=> _age;
@@ -47,20 +47,23 @@ _name=name;
 }
 
    public virtual void print (){
-    Console.WriteLine($"my name is {Name} , my age is {_age}");
+    Console.WriteLine($"my name is {Name} , my age is {Age}");
    }
 
    
 }
 public class Student : Person {
-    public String Name;
-    public int Age;
+    //public String Name;
+    //public int Age;
     private int _year;
    public int Year{
     get{
         return _year; 
         }
         set{
+    if(value< 1 || value>5 ){
+    throw new Exception("invalid year");
+    }
             _year=value;
         }
    }
@@ -70,6 +73,9 @@ public class Student : Person {
             return _gpa;
         }
         set{
+        if (value<0 || value >4){
+        throw new Exception("invalid gpa");
+    }
             _gpa=value;
         }
      }
@@ -86,7 +92,7 @@ public class Student : Person {
     Gpa=gpa;
  }
  public override void print(){
-    Console.WriteLine($"My name is {Name},My age is {getAge()} ,and my gpa {Gpa}");
+    Console.WriteLine($"My name is {Name},My age is {Age} ,and my gpa {Gpa}");
  }
 }
 public class Database{
@@ -130,8 +136,11 @@ public class Staff : Person {
             return _joinyear;
         }
         set{
-    
-          _joinyear=value;
+    var years=2022-(2022-Age);
+    if (years<=21){
+        throw new Exception("invalid joinyear");
+    }
+          _joinyear=years;
 
        } 
     }
@@ -139,8 +148,8 @@ public class Staff : Person {
             if(salary<0|| salary>120000 ){
     throw new Exception("invalid salary");
     }
-    var between=(2022-Age);
-    if (between<=21){
+    var years=(2022-Age);
+    if (years<=21){
         throw new Exception("invalid joinyear");
     }
         Salary=salary;
@@ -148,7 +157,7 @@ public class Staff : Person {
     }
     public override void print()
     {
-     Console.WriteLine($"My name is {Name},My age is {getAge()} ,and my salary {Salary}");
+     Console.WriteLine($"My name is {Name},My age is {Age} ,and my salary {Salary}");
 
     }
 }
@@ -183,7 +192,7 @@ public class Program{
         var age1=Convert.ToInt32(Console.ReadLine()); 
         Console.Write("salary:");
         var salary=Convert.ToInt32(Console.ReadLine());
-        Console.Write("year :");
+        Console.Write("joinyear :");
         var joinyear=Convert.ToInt32(Console.ReadLine());
         try{
         var staff=new Staff(name1,age1,salary,joinyear);
